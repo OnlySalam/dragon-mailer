@@ -1,0 +1,30 @@
+version: "3"
+services: 
+  prometheus:
+    image: "prom/prometheus"
+    container_name: prometheus
+    ports: 
+    - "9091:9090"
+    command: --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  nodeapp:
+    build: 
+      context: nodeapp/ 
+    image: "nodeapp:latest"
+    container_name: nodeapp
+    ports: 
+    - "1234:1234"
+    volumes:
+      - ./nodeapp/server.js:/app/server.js/
+
+  dragonmailer:
+    build:
+      context: dragon-mailer/
+    image: "dragon-mailer:2"
+    container_name: dragon-mailer
+    ports:
+      - "3400:3400"
+    volumes:
+      - ./dragon-mailer/dragon.js:/app/dragon.js
